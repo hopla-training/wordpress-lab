@@ -1,0 +1,73 @@
+version: "3.1"
+services:
+  db:
+    image: "mysql:latest"
+    networks:
+      wplabnet:
+        aliases: ["db"]
+    volumes:
+      - "db_data:/var/lib/mysql"
+    secrets:
+      - source: "mysqlpassword"
+        target: "mysqlpassword"
+        uid: "0"
+        gid: "0"
+        mode: 0400
+    secrets:
+      - source: "mysqlrootpassword"
+        target: "mysqlrootpassword"
+        uid: "0"
+        gid: "0"
+        mode: 0400
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/mysqlrootpassword"
+      MYSQL_PASSWORD_FILE: "/run/secrets/mysqlpassword"
+      MYSQL_USER: "wordpress"
+      MYSQL_DATABASE: "wordpress"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role == worker"
+  web:
+    image: "wordpress:latest"
+    ports:
+      - "8080:80"
+    volumes:
+      - "wp-data:/var/www/html"
+    networks:
+      wplabnet:
+        aliases: ["web"]
+    depends_on:
+      - db
+    secrets:
+      - source: "mysqlpassword"
+        target: "mysqlpassword"
+        uid: "0"
+        gid: "0"
+        mode: 0400
+    environment:
+      WORDPRESS_DB_USER: "wordpress"
+      WORDPRESS_DB_PASSWORD_FILE: "/run/secrets/mysqlpassword"
+      WORDPRESS_DB_HOST: "db:3306"
+      WORDPRESS_DB_NAME: "wordpress"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role == worker"
+networks:
+  wplabnet:
+    driver: "overlay"
+    internal: true
+volumes:
+  db_data:
+  wp-data:
+secrets:
+  mysqlpassword:
+    external:
+      name: "wplab_mysqlpassword"
+secrets:
+  mysqlrootpasword:
+    external:
+      name: "wplab_mysqlrootpassword"
