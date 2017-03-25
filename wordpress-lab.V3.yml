@@ -10,15 +10,14 @@ services:
     secrets:
       - source: "mysqlpassword"
         target: "mysqlpassword"
-        uid: "0"
-        gid: "0"
-        mode: 0400
-    secrets:
+        #uid: "0"
+        #gid: "0"
+        #mode: 0400
       - source: "mysqlrootpassword"
         target: "mysqlrootpassword"
-        uid: "0"
-        gid: "0"
-        mode: 0400
+        #uid: "0"
+        #gid: "0"
+        #mode: 0400
     environment:
       MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/mysqlrootpassword"
       MYSQL_PASSWORD_FILE: "/run/secrets/mysqlpassword"
@@ -26,9 +25,9 @@ services:
       MYSQL_DATABASE: "wordpress"
     deploy:
       replicas: 1
-      placement:
-        constraints:
-          - "node.role == worker"
+#      placement:
+#        constraints:
+#          - "node.role == worker"
   web:
     image: "wordpress:latest"
     ports:
@@ -43,9 +42,9 @@ services:
     secrets:
       - source: "mysqlpassword"
         target: "mysqlpassword"
-        uid: "0"
-        gid: "0"
-        mode: 0400
+        #uid: "0"
+        #gid: "0"
+        #mode: 0400
     environment:
       WORDPRESS_DB_USER: "wordpress"
       WORDPRESS_DB_PASSWORD_FILE: "/run/secrets/mysqlpassword"
@@ -53,9 +52,9 @@ services:
       WORDPRESS_DB_NAME: "wordpress"
     deploy:
       replicas: 1
-      placement:
-        constraints:
-          - "node.role == worker"
+#      placement:
+#        constraints:
+#          - "node.role == worker"
 networks:
   wplabnet:
     driver: "overlay"
