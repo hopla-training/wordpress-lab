@@ -2,6 +2,9 @@
 
 ## Wordpress Lab for learning porpouses.
 
+### [@frjaraur](https://github.com/frjaraur)
+### [@hoplasoftware](https://github.com/hopla-training)
+
 1. Create your swarm cluster
 
 3. We will use __"wplab"__ as stack name, this is important because compose file will use this name for secrets objects.
