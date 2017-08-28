@@ -8,16 +8,16 @@ services:
     volumes:
       - "db_data:/var/lib/mysql"
     secrets:
-      - source: "mysqlpassword"
-        target: "mysqlpassword"
-        #uid: "0"
-        #gid: "0"
-        #mode: 0400
-      - source: "mysqlrootpassword"
-        target: "mysqlrootpassword"
-        #uid: "0"
-        #gid: "0"
-        #mode: 0400
+      - source: mysqlpassword
+        target: mysqlpassword
+        uid: "0"
+        gid: "0"
+        mode: 0400
+      - source: mysqlrootpassword
+        target: mysqlrootpassword
+        uid: "0"
+        gid: "0"
+        mode: 0400                
     environment:
       MYSQL_ROOT_PASSWORD_FILE: "/run/secrets/mysqlrootpassword"
       MYSQL_PASSWORD_FILE: "/run/secrets/mysqlpassword"
@@ -40,11 +40,8 @@ services:
     depends_on:
       - db
     secrets:
-      - source: "mysqlpassword"
-        target: "mysqlpassword"
-        #uid: "0"
-        #gid: "0"
-        #mode: 0400
+      - source: mysqlpassword
+        target: mysqlpassword
     environment:
       WORDPRESS_DB_USER: "wordpress"
       WORDPRESS_DB_PASSWORD_FILE: "/run/secrets/mysqlpassword"
@@ -66,7 +63,6 @@ secrets:
   mysqlpassword:
     external:
       name: "wplab_mysqlpassword"
-secrets:
-  mysqlrootpasword:
+  mysqlrootpassword:
     external:
       name: "wplab_mysqlrootpassword"
