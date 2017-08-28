@@ -10,6 +10,9 @@
 3. We will use __"wplab"__ as stack name, this is important because compose file will use this name for secrets objects.
 
     __If you change this name you should change stack file too.__
+    
+###__These secret names will label secret from other services or stack although they will be used with same names inside containers/tasks.__
+
 
 4. Create two secret objects for this stack deployment.
 
